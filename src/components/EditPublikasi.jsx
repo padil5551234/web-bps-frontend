@@ -1,4 +1,4 @@
-// src/components/EditPublikasi.jsx - Perbaikan
+// src/components/EditPublikasi.jsx - Dengan Notifikasi Alert yang Bagus
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePublications } from '../hooks/usePublications';
@@ -17,6 +17,7 @@ export default function EditPublikasi() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [description, setDescription] = useState(""); 
+  const [successNotification, setSuccessNotification] = useState(false);
 
   // Mengisi form dengan data publikasi yang sedang diedit
   useEffect(() => {
@@ -34,6 +35,17 @@ export default function EditPublikasi() {
       navigate('/publications');
     }
   }, [publication, publications, navigate]);
+
+  // Auto hide success notification after 3 seconds
+  useEffect(() => {
+    if (successNotification) {
+      const timer = setTimeout(() => {
+        setSuccessNotification(false);
+        navigate('/publications');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [successNotification, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,11 +80,11 @@ export default function EditPublikasi() {
 
       console.log("Updating publication:", updatedPublication);
 
-      // PERBAIKAN: Memanggil fungsi untuk mengedit publikasi (sekarang async)
+      // Memanggil fungsi untuk mengedit publikasi (sekarang async)
       await editPublication(updatedPublication);
       
-      alert("Publikasi berhasil diperbarui!");
-      navigate('/publications');
+      // Tampilkan notifikasi sukses
+      setSuccessNotification(true);
 
     } catch (err) {
       console.error("Error updating publication:", err);
@@ -107,12 +119,49 @@ export default function EditPublikasi() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg relative">
+      {/* Success Notification */}
+      {successNotification && (
+        <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl transform transition-all duration-300 ease-in-out">
+          <div className="flex items-center space-x-3">
+            <div className="flex-shrink-0">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="font-semibold">Berhasil!</p>
+              <p className="text-sm">Publikasi berhasil diperbarui</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-40 rounded-xl">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-700 mx-auto"></div>
+            <p className="mt-4 text-gray-600 font-medium">Sedang memperbarui publikasi...</p>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Edit Publikasi</h1>
       
       {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-          {error}
+        <div className="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-r">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="font-medium">Error</p>
+              <p className="text-sm">{error}</p>
+            </div>
+          </div>
         </div>
       )}
 
