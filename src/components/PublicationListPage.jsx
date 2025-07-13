@@ -192,7 +192,11 @@ export default function PublicationListPage() {
             {filteredAndSortedPublications.map((pub, idx) => (
               <tr
                 key={pub.id}
-                className="bg-white border-b hover:bg-gray-50 transition-colors duration-200"
+                className={`border-b transition-colors duration-200 ${
+                  idx % 2 === 0 
+                    ? 'bg-white hover:bg-blue-50' 
+                    : 'bg-gray-50 hover:bg-blue-100'
+                }`}
               >
                 <td className="px-6 py-4 font-medium text-gray-900 text-center">
                   {idx + 1}
@@ -221,7 +225,7 @@ export default function PublicationListPage() {
                           onClick={() => toggleDescription(pub.id)}
                           className="text-sky-600 hover:text-sky-800 text-xs mt-1 font-medium"
                         >
-                          {expandedDescriptions.has(pub.id) ? 'Sembunyikan' : 'Selengkapnya'}
+                          {expandedDescriptions.has(pub.id) ? 'Sembunyikan' : 'Lihat'}
                         </button>
                       )}
                     </div>
