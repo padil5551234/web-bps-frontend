@@ -32,6 +32,11 @@ export default function LoginPage({ setCurrentPage }) {
     return <img src={bpslogo} alt="BPS Logo" className="h-16 w-16" />;
   }
 
+  const handleDemoLogin = () => {
+    setEmail("admin@example.com");
+    setPassword("123");
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-50">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
@@ -137,6 +142,52 @@ export default function LoginPage({ setCurrentPage }) {
             )}
           </button>
         </form>
+
+        {/* Demo Account Section */}
+        <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+          <div className="flex items-center mb-3">
+            <svg
+              className="w-5 h-5 text-blue-600 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <h3 className="text-sm font-semibold text-blue-800">Akun Demo</h3>
+          </div>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center">
+              <span className="text-gray-600 font-medium w-16">Email:</span>
+              <span className="text-gray-800 font-mono bg-white px-2 py-1 rounded border">
+                admin@example.com
+              </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-gray-600 font-medium w-16">Password:</span>
+              <span className="text-gray-800 font-mono bg-white px-2 py-1 rounded border">
+                123
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={loading}
+            className={`mt-3 w-full text-sm font-medium py-2 px-4 rounded-md border border-blue-300 transition-colors duration-200 ${
+              loading
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-white text-blue-700 hover:bg-blue-50 hover:border-blue-400"
+            }`}
+          >
+            Gunakan Akun Demo
+          </button>
+        </div>
       </div>
     </div>
   );
