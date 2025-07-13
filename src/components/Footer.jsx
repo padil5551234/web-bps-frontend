@@ -6,6 +6,9 @@ export default function Footer() {
       <p className="text-gray-500 text-sm">
         Created by Falana Rofako Hakam (222112038@stis.ac.id)
       </p>
+      <p>
+        Edited by Padil Muhammad Zaki (222313311@stis.ac.id)
+      </p>
     </footer>
   );
 }
